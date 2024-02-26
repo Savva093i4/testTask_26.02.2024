@@ -35,14 +35,10 @@ namespace Player.ActionHandlers
 
                 _pointerDownPosition = CameraHolder.Instance.MainCamera.ScreenToWorldPoint(Input.mousePosition);
                 RaycastHit2D hit = Physics2D.Raycast(_pointerDownPosition, Vector3.forward);
-                if (!hit)
-                {
-                    Debug.LogError("КАМЕРА");
+                if (!hit && !EventSystem.current.currentSelectedGameObject)
                     ClickOnEmptySpace?.Invoke();
-                }
+                
 
-                // if(EventSystem.current.alreadySelecting)
-                //     Debug.LogError(00);
 
                 PointerDownEvent?.Invoke(_pointerDownPosition);
 

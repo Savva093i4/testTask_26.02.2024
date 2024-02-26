@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Camera;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Utils.MonoBehaviourUtils;
@@ -59,8 +60,8 @@ namespace Utils.Scenes
         private static void OnSceneLoaded(Scene scene, LoadSceneMode loadSceneMode)
         {
             SceneManager.sceneLoaded -= OnSceneLoaded;
-
             OnChangeFinished();
+            CameraHolder.Instance.cameraMoveControl.ResetCameraPosition();
         }
     }
 }

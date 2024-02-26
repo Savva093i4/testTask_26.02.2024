@@ -45,9 +45,7 @@ namespace Levels
 
         private void ClickOnEmptySpace()
         {
-            Debug.Log(colorConnectionManager.GetNewStagePosition(false).name);
             Vector3 newCameraPosition = colorConnectionManager.GetNewStagePosition().position;
-            
             CameraHolder.Instance.cameraMoveControl.MoveCameraToPoint(newCameraPosition);
         }
     }
