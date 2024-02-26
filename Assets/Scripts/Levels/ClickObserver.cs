@@ -47,7 +47,8 @@ namespace Levels
         {
             Debug.Log(colorConnectionManager.GetNewStagePosition(false).name);
             Vector3 newCameraPosition = colorConnectionManager.GetNewStagePosition().position;
-            CameraHolder.Instance.MainCamera.transform.position = new Vector3(newCameraPosition.x,newCameraPosition.y,CameraHolder.Instance.transform.position.z);
+            
+            CameraHolder.Instance.cameraMoveControl.MoveCameraToPoint(newCameraPosition);
         }
     }
 }
