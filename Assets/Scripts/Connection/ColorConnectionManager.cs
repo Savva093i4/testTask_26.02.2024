@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Events;
@@ -14,24 +15,26 @@ namespace Connection
         [SerializeField] private ColorConnector colorConnector;
 
         private ClickHandler _clickHandler;
-        
+
         private readonly ColorConnectionHistoryHandler _historyHandler = new();
 
         [SerializeField] private ColorNode[] _nodes;
+        private byte _currentNodeIndex;
 
         private readonly Dictionary<ColorNodeTarget, bool> _completionsByTargetNode = new();
         private readonly Dictionary<ColorNode, HashSet<ColorNode>> _connectionsFromColorNode = new();
 
         private ColorNode _currentConnectionMainNode;
         private ColorConnector _currentColorConnector;
-        
+
         public Transform[] _nodesPossitions;
 
 
         private void Awake()
         {
+            ClearAndFillNodesPossitionData();
+
             _nodes = colorNodesContainer.GetComponentsInChildren<ColorNode>();
-            _nodesPossitions = GetComponentsInChildren<Transform>().Where(i=>i.parent==colorNodesContainer.transform).ToArray();
 
             var nodeTargets = colorNodesContainer.GetComponentsInChildren<ColorNodeTarget>(true);
             foreach (var nodeTarget in nodeTargets)
@@ -47,6 +50,15 @@ namespace Connection
         private void OnDestroy()
         {
             _clickHandler.ClearEvents();
+        }
+
+        private void ClearAndFillNodesPossitionData()
+        {
+            // if (_nodesPossitions.Length != 0)
+            //     Array.Clear(_nodesPossitions, 0, _nodesPossitions.Length);
+            _currentNodeIndex = 0;
+            _nodesPossitions = GetComponentsInChildren<Transform>()
+                .Where(i => i.parent == colorNodesContainer.transform).ToArray();
         }
 
         private void StartConnecting(ColorNode colorNode)
@@ -74,6 +86,21 @@ namespace Connection
         private void CancelConnecting()
         {
             Destroy(_currentColorConnector.gameObject);
+        }
+
+        public Transform GetNewStagePosition(bool withIndexChange = true)
+        {
+            if (withIndexChange)
+            {
+                if (_nodesPossitions.Length > _currentNodeIndex + 1)
+                    _currentNodeIndex++;
+                else
+                    _currentNodeIndex = 0;
+            }
+
+            Debug.Log(_nodesPossitions[_currentNodeIndex].name);
+
+            return _nodesPossitions[_currentNodeIndex];
         }
 
         public bool TryGetColorNodeInPosition(Vector2 position, out ColorNode result)

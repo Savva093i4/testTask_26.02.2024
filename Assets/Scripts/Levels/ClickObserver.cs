@@ -1,4 +1,5 @@
 using System;
+using Camera;
 using Connection;
 using Events;
 using Player.ActionHandlers;
@@ -44,7 +45,9 @@ namespace Levels
 
         private void ClickOnEmptySpace()
         {
-            Debug.Log(colorConnectionManager);
+            Debug.Log(colorConnectionManager.GetNewStagePosition(false).name);
+            Vector3 newCameraPosition = colorConnectionManager.GetNewStagePosition().position;
+            CameraHolder.Instance.MainCamera.transform.position = new Vector3(newCameraPosition.x,newCameraPosition.y,CameraHolder.Instance.transform.position.z);
         }
     }
 }
