@@ -24,11 +24,14 @@ namespace Connection
 
         private ColorNode _currentConnectionMainNode;
         private ColorConnector _currentColorConnector;
+        
+        public Transform[] _nodesPossitions;
 
 
         private void Awake()
         {
             _nodes = colorNodesContainer.GetComponentsInChildren<ColorNode>();
+            _nodesPossitions = GetComponentsInChildren<Transform>().Where(i=>i.parent==colorNodesContainer.transform).ToArray();
 
             var nodeTargets = colorNodesContainer.GetComponentsInChildren<ColorNodeTarget>(true);
             foreach (var nodeTarget in nodeTargets)

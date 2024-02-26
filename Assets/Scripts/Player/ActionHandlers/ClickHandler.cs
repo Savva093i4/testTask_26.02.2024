@@ -1,6 +1,7 @@
 using System;
 using Camera;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using Utils.Singleton;
 
@@ -16,6 +17,7 @@ namespace Player.ActionHandlers
         public event Action<Vector3> PointerUpEvent;
         public event Action<Vector3> DragStartEvent;
         public event Action<Vector3> DragEndEvent;
+        public event UnityAction ClickOnEmptySpace;
 
         private Vector3 _pointerDownPosition;
 
@@ -34,10 +36,13 @@ namespace Player.ActionHandlers
                 _pointerDownPosition = CameraHolder.Instance.MainCamera.ScreenToWorldPoint(Input.mousePosition);
                 RaycastHit2D hit = Physics2D.Raycast(_pointerDownPosition, Vector3.forward);
                 if (!hit)
-                Debug.LogError("КАМЕРА");
+                {
+                    Debug.LogError("КАМЕРА");
+                    ClickOnEmptySpace?.Invoke();
+                }
 
-                if(EventSystem.current.alreadySelecting)
-                    Debug.LogError(00);
+                // if(EventSystem.current.alreadySelecting)
+                //     Debug.LogError(00);
 
                 PointerDownEvent?.Invoke(_pointerDownPosition);
 
